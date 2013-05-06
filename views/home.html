@@ -23,7 +23,7 @@ $(function(){
                   info.append('<li>'+res[i]+'</li>');
               }
           }
-        });
+        }).error(function(){alert('发生错误')});
     }
 });
 </script>

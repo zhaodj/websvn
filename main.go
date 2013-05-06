@@ -36,6 +36,7 @@ type Message struct {
 
 var Cfg Config
 
+//加在配置文件
 func loadConfig(filepath string) {
 	fmt.Println("解析配置文件：" + filepath)
 	file, err := os.Open(filepath)

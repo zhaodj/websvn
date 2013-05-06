@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <title>更新svn</title>
+    </head>
+    <body>
+        <div id="container" class="content">
+            {{.ContentHTML}}
+        </div>
+        <script type="text/javascript" src="js/lib/jquery-1.7.1.min.js"></script>
+        {{define "footjs"}}
+        {{end}}
+        {{template "footjs" .Data}}
+    </body>
+</html>

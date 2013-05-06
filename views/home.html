@@ -1,0 +1,30 @@
+<p><input type="button" class="update" value="更新"><input type="button" class="status" value="查看状态"></p>
+<ul class="info">
+</ul>
+{{define "footjs"}}
+<script type="text/javascript">
+$(function(){
+    $('.status').each(function(){
+        dopost($(this),'/status');
+    });
+    $('.update').click(function(){
+        dopost($(this),'/update');
+    });
+    $('.status').click(function(){
+      dopost($(this),'/status')
+    });
+    function dopost(btn,url){
+        $.post(url,function(res){
+          console.log(res);
+          var info=btn.parent().siblings('.info');
+          info.empty();
+          if(res){
+              for(var i=0;i<res.length;i++){
+                  info.append('<li>'+res[i]+'</li>');
+              }
+          }
+        });
+    }
+});
+</script>
+{{end}}

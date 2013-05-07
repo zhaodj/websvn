@@ -23,6 +23,7 @@ type Config struct {
 	Debug      bool
 	Port       string
 	ProjectDir string
+	Profile    string
 }
 
 type content struct {
@@ -36,7 +37,7 @@ type Message struct {
 
 var Cfg Config
 
-//加在配置文件
+//加载配置文件
 func loadConfig(filepath string) {
 	fmt.Println("解析配置文件：" + filepath)
 	file, err := os.Open(filepath)
@@ -181,6 +182,33 @@ func svnStatus(w http.ResponseWriter, r *http.Request) {
 	serveJson(w, outParse(out.String()))
 }
 
+func restart(w http.ResponseWriter, r *http.Request) {
+	var out bytes.Buffer
+	cmd := exec.Command("mvn", "jetty:stop")
+	cmd.Dir = Cfg.ProjectDir
+	cmd.Stdout = &out
+	err := cmd.Run()
+	if err == nil {
+		log.Println("stop success!")
+		if Cfg.Profile == "" {
+			cmd = exec.Command("mvn", "jetty:run")
+		} else {
+			cmd = exec.Command("mvn", "jetty:run", "-P"+Cfg.Profile)
+		}
+		cmd.Dir = Cfg.ProjectDir
+		cmd.Stdout = &out
+		//TODO 后台运行并返回结果，达到&效果
+		err = cmd.Start() //Run()
+		if err == nil {
+			return
+		}
+	}
+	log.Println(out.String())
+	log.Println(err)
+	w.WriteHeader(http.StatusInternalServerError)
+	serveJson(w, Message{err.Error()})
+}
+
 func main() {
 	wd, _ := os.Getwd()
 	loadConfig(path.Join(wd, "config.json")) //加载配置文件
@@ -194,6 +222,7 @@ func main() {
 	http.HandleFunc("/", home)
 	http.HandleFunc("/update", svnUpdate)
 	http.HandleFunc("/status", svnStatus)
+	http.HandleFunc("/restart", restart)
 
 	err := http.ListenAndServe(":"+Cfg.Port, nil) //设置监听的端口
 	if err != nil {

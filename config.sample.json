@@ -1,5 +1,6 @@
 {
   "debug":true,
   "port":"9090",
-  "projectDir":"/Users/zhaodaojun/Documents/workspace/childalbum"
+  "projectDir":"/Users/zhaodaojun/Documents/workspace/childalbum",
+  "profile":"server"
 }

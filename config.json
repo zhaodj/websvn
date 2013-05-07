@@ -1,5 +1,6 @@
 {
   "debug":true,
   "port":"9099",
-  "projectDir":"/Users/zhaodaojun/Documents/workspace/childalbum"
+  "projectDir":"/Users/zhaodaojun/Documents/workspace/childalbum/childalbum-web",
+  "profile":""
 }

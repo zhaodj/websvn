@@ -1,4 +1,8 @@
-<p><input type="button" class="update" value="更新"><input type="button" class="status" value="查看状态"></p>
+<p>
+  <input type="button" class="update" value="更新">
+  <input type="button" class="status" value="查看状态">
+  <input type="button" class="restart" value="重启">
+</p>
 <ul class="info">
 </ul>
 {{define "footjs"}}
@@ -15,7 +19,6 @@ $(function(){
     });
     function dopost(btn,url){
         $.post(url,function(res){
-          console.log(res);
           var info=btn.parent().siblings('.info');
           info.empty();
           if(res){
@@ -25,6 +28,15 @@ $(function(){
           }
         }).error(function(){alert('发生错误')});
     }
+    $('.restart').click(function(){
+      var $this=$(this);
+      $this.prop('disabled',true);
+      $this.val('正在重启...');
+      $.post('/restart',function(){
+        $this.prop('disabled',false).val('重启');
+        alert('重启成功');
+      }).error(function(){alert('重启发生错误');})
+    });
 });
 </script>
 {{end}}
